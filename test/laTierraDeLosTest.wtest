@@ -1,0 +1,8 @@
+import laTierraMedia.*
+
+describe "gandalf" {
+    test "el poder base es de 250" {
+        assert.equals(gandalf.vida(), 100)
+    }
+
+}

@@ -41,6 +41,24 @@ object magiaEnana {
 }
 
 object flechaBronce {
+    var poder = 100
+    var fechaLustrada = new Date(day = 1, month = 1, year = 2024) // 01/01/2024
+    var fechaUsada = new Date(day = 5, month = 1, year = 2024) // 05/01/2024
+
+    method fechaUsada(unaFecha){
+        fechaUsada = unaFecha
+    }
+
+    method diferenciaFechas() {
+        return (fechaLustrada - fechaUsada)
+    }
+
+    method poderOtorgado(unGuerrero) {
+        if (poder - self.diferenciaFechas() < 0){
+            return 0
+        }
+        return poder - self.diferenciaFechas()
+    }
 
 }
 
