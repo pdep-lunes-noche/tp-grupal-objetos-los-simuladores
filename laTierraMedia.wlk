@@ -1,5 +1,5 @@
 object baculo {
-    var poderBase = 250
+    var property poderBase = 250
 
     method poderOtorgado(unGuerrero) {
         var poder = poderBase
@@ -14,6 +14,9 @@ object baculo {
 
         return poder
     }
+
+    method pasarDia() {
+    }
 }
 
 object espada {
@@ -25,6 +28,9 @@ object espada {
 
     method cambiarMagia(nuevaMagia) {
         magia = nuevaMagia
+    }
+
+    method pasarDia() {
     }
 }
 
@@ -42,44 +48,69 @@ object magiaEnana {
 
 object flechaBronce {
     var poder = 100
-    var fechaLustrada = new Date(day = 1, month = 1, year = 2024) // 01/01/2024
-    var fechaUsada = new Date(day = 5, month = 1, year = 2024) // 05/01/2024
-
-    method fechaUsada(unaFecha){
-        fechaUsada = unaFecha
-    }
-
-    method diferenciaFechas() {
-        return (fechaLustrada - fechaUsada)
-    }
 
     method poderOtorgado(unGuerrero) {
-        if (poder - self.diferenciaFechas() < 0){
-            return 0
-        }
-        return poder - self.diferenciaFechas()
+        return poder
+    }
+
+    method pasarDia() {
+        poder = (poder - 1).max(0)
+    }
+
+    method lustrar() {
+        poder = 100
     }
 
 }
 
 object flechaAluminio {
+    var poder = 50
 
+    method poderOtorgado(unGuerrero) {
+        return poder
+    }
+
+    method pasarDia() {
+    }
 }
 
 
 object flechaHierro {
+    var property oxidada = false
 
+    method poderOtorgado(unGuerrero) {
+        var poder = 70
+
+        if (oxidada) {
+            poder = poder / 2
+        }
+
+        return poder
+    }
+
+    method pasarDia() {
+    }
 }
 
 object cajaFlechas {
+    var flechas = [flechaAluminio, flechaHierro, flechaBronce]
 
+    method poderOtorgado(unGuerrero) {
+        var flechasImportantes = flechas.filter({ flecha => flecha.poderOtorgado(unGuerrero) > 50 })
+
+        return flechasImportantes.sum({ flecha => flecha.poderOtorgado(unGuerrero) }) / flechasImportantes.size()
+    }
+
+    method pasarDia() {
+        flechas.forEach({ flecha => flecha.pasarDia()})
+    }
 }
 
 
-object gandalf {
-    var vidaActual = 100
-    var multiplicadorDeVida = 15
-    var armas = [baculo, espada, cajaFlechas]
+class Gandalf {
+    var property vidaActual = 100
+    var property armas = [baculo, espada]
+    var property caja = cajaFlechas
 
     method vida() {
         return vidaActual
@@ -90,11 +121,17 @@ object gandalf {
     }
 
     method poder() {
-        var poderArmas = armas.sum({arma => arma.poderOtorgado(self)})
+        var multiplicadorDeVida = 15
 
         if (self.tienePocaVida()) {
             multiplicadorDeVida = 200
         }
+
+        var poderArmas = armas.sum({
+            arma => arma.poderOtorgado(self)
+        })
+
+        poderArmas += caja.poderOtorgado(self)
 
         return vidaActual * multiplicadorDeVida + poderArmas * 2
     }
@@ -105,6 +142,10 @@ object gandalf {
 
     method estaArmado() {
         return armas.size() > 0
+    }
+
+    method pasarDia() {
+        armas.forEach({ arma => arma.pasarDia() })
     }
 
     method perderVida(cantidad) {
@@ -127,7 +168,7 @@ object lebennin {
 
         return unGuerrero.poder() > poderMinimoParaPasar
     }
-    method consecuecia (unGuerrero){
+    method consecuencia (unGuerrero){
 
     }
 }
@@ -137,6 +178,7 @@ object minasTirith {
     method puedePasar(unGuerrero) {
         return unGuerrero.estaArmado()
     }
+    
 
     method consecuencia(unGuerrero) {
         if (self.puedePasar(unGuerrero)) {

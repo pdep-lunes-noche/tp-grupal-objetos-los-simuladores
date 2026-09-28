@@ -2,7 +2,87 @@ import laTierraMedia.*
 
 describe "gandalf" {
     test "el poder base es de 250" {
+        const gandalf = new Gandalf()
+        
         assert.equals(gandalf.vida(), 100)
     }
 
+}
+
+describe "Baculo" {
+
+    test "un baculo para un guerrero con mucha vida" {
+        const gandalf = new Gandalf()
+
+        assert.equals(250, baculo.poderOtorgado(gandalf))
+    }
+
+     test "un baculo para un guerrero con poca vida tiene tope" {
+        const gandalf = new Gandalf()
+       
+        gandalf.perderVida(95)
+        baculo.poderBase(300)
+        assert.equals(400, baculo.poderOtorgado(gandalf))
+    }
+
+    test "un baculo de poder base 100 para un guerrero con poca vida" {
+        const gandalf = new Gandalf()
+
+        gandalf.perderVida(95)
+        baculo.poderBase(100)
+        assert.equals(200, baculo.poderOtorgado(gandalf))
+    }
+
+}
+
+describe "Espada" {
+
+    test "una espada elfica para cualquier guerrero" {
+        const gandalf = new Gandalf()
+
+        espada.cambiarMagia(magiaElfica)
+        assert.equals(250, espada.poderOtorgado(gandalf))
+    }
+
+    test "una espada enana para un guerrero de vida 100" {
+        const gandalf = new Gandalf()
+
+        espada.cambiarMagia(magiaEnana)
+        assert.equals(500, espada.poderOtorgado(gandalf))
+    }
+}
+
+describe "Flechas" {
+
+    test "flecha de aluminio" {
+        const gandalf = new Gandalf()
+
+        assert.equals(50, flechaAluminio.poderOtorgado(gandalf))
+    }
+
+    test "flecha de hierro sin oxidar" {
+        const gandalf = new Gandalf()
+
+        flechaHierro.oxidada(false)
+        assert.equals(70, flechaHierro.poderOtorgado(gandalf))
+    }
+
+    test "flecha de hierro oxidada" {
+        const gandalf = new Gandalf()
+
+        flechaHierro.oxidada(true)
+        assert.equals(35, flechaHierro.poderOtorgado(gandalf))
+    }
+
+    test "una caja con la flecha de aluminio, la flecha de hierro sin oxidar y una fecha de bronce lustrada el 01/01/2024 y usada el 05/01/202" {
+    const gandalf = new Gandalf()
+    flechaBronce.lustrar()
+
+    flechaBronce.pasarDia()
+    flechaBronce.pasarDia()
+    flechaBronce.pasarDia()
+    flechaBronce.pasarDia()
+
+    assert.equals(83, cajaFlechas.poderOtorgado(gandalf))
+    }
 }
